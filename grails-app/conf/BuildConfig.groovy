@@ -15,9 +15,9 @@ grails.project.dependency.resolution = {
 	}
 
 	dependencies {
-        compile "net.sf.ehcache:ehcache-core:2.4.6"
-		compile 'redis.clients:jedis:2.2.0'
-		compile 'org.springframework.data:spring-data-redis:1.1.0.RELEASE'
+		compile 'redis.clients:jedis:2.4.2'
+		compile 'org.springframework.data:spring-data-redis:1.3.0.RELEASE'
+        compile 'org.springframework:spring-expression:4.0.2.RELEASE'
 
     }
 
@@ -25,6 +25,6 @@ grails.project.dependency.resolution = {
         build(":release:3.0.1", ":rest-client-builder:1.0.3") {
             export = false
         }
-		compile(':cache:1.1.1')
+		compile(':cache:1.1.6')
 	}
 }

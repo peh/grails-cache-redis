@@ -26,7 +26,7 @@ import redis.clients.jedis.Protocol
 
 class CacheRedisGrailsPlugin {
 
-    String version = '1.0.4'
+    String version = '1.1.0'
     String grailsVersion = '2.0 > *'
     def loadAfter = ['cache']
     def pluginExcludes = [
