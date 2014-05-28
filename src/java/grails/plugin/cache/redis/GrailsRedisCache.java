@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import grails.plugin.cache.web.filter.redis.GrailsKeySerializer;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -62,7 +63,7 @@ public class GrailsRedisCache implements GrailsCache {
 		this.template = template;
 		this.prefix = prefix;
 
-		StringRedisSerializer stringSerializer = new StringRedisSerializer();
+        GrailsKeySerializer stringSerializer = new GrailsKeySerializer();
 
 		// name of the set holding the keys
 		setName = stringSerializer.serialize(name + "~keys");
@@ -114,13 +115,14 @@ public class GrailsRedisCache implements GrailsCache {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void evict(Object key) {
+	public void evict(final Object key) {
 		final byte[] k = computeKey(key);
 		template.execute(new RedisCallback<Object>() {
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                connection.multi();
 				connection.del(k);
-				// remove key from set
 				connection.zRem(setName, k);
+                connection.exec();
 				return null;
 			}
 		}, true);
